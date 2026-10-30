@@ -1,0 +1,29 @@
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+frontend/license.js
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Generated output
+outputs/
+out/
+*.log
+
+# Vendored Nutrient Web SDK (loaded from the CDN instead)
+frontend/vendor/
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/

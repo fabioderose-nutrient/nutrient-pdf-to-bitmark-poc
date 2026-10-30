@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF to bitmark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="24" height="24" rx="6" fill="#0F172A"/>
+        <path d="M8 9h12M8 14h8M8 19h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div class="brand-title">PDF to bitmark</div>
+        <div class="brand-sub">Nutrient SDK structure extraction, written as bitmark 3 and validated with the official parser</div>
+      </div>
+    </div>
+
+    <form id="convertForm" class="controls" autocomplete="off">
+      <label class="field">
+        <span>Sample</span>
+        <select id="sampleSelect" name="sample"></select>
+      </label>
+      <label class="field">
+        <span>Or upload</span>
+        <input id="fileInput" type="file" accept="application/pdf">
+      </label>
+      <label class="toggle" title="Generate multiple-choice, true/false and flashcard bits per chapter with an LLM">
+        <input id="quizToggle" type="checkbox">
+        <span class="track"><span class="thumb"></span></span>
+        <span class="toggle-label">Learning checks <small id="quizProvider"></small></span>
+      </label>
+      <button id="convertBtn" class="btn primary" type="submit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        Convert
+      </button>
+    </form>
+  </header>
+
+  <main class="workspace">
+    <section class="pane viewer-pane">
+      <div class="pane-head">
+        <span class="pane-title">Source PDF</span>
+        <span id="viewerHint" class="hint">Click a bit on the right to see where it comes from</span>
+      </div>
+      <div id="viewer" class="viewer"></div>
+      <div id="viewerEmpty" class="empty">
+        <h3>No document yet</h3>
+        <p>Pick a sample or upload a PDF, then press Convert.</p>
+      </div>
+    </section>
+
+    <section class="pane result-pane">
+      <div class="pane-head tabs" role="tablist">
+        <button class="tab active" data-tab="preview" role="tab">Preview</button>
+        <button class="tab" data-tab="markup" role="tab">bitmark markup</button>
+        <button class="tab" data-tab="json" role="tab">bitmark JSON</button>
+        <button class="tab" data-tab="log" role="tab">Pipeline</button>
+        <div class="spacer"></div>
+        <span id="statusPill" class="pill idle">Idle</span>
+      </div>
+
+      <div id="statsBar" class="stats" hidden></div>
+
+      <div id="tab-preview" class="tab-body active">
+        <div id="bits" class="bits">
+          <div class="empty inline">
+            <h3>bitmark preview</h3>
+            <p>Chapters, articles, tables, images and learning checks will render here as bits. Each one is traceable to its position in the PDF.</p>
+          </div>
+        </div>
+      </div>
+      <div id="tab-markup" class="tab-body">
+        <div class="code-head">
+          <span>book.bitmark</span>
+          <div>
+            <button class="btn ghost small" id="copyMarkup" type="button">Copy</button>
+            <a class="btn ghost small" id="downloadMarkup" download="book.bitmark" href="#">Download</a>
+          </div>
+        </div>
+        <pre id="markup" class="code"></pre>
+      </div>
+      <div id="tab-json" class="tab-body">
+        <div class="code-head">
+          <span>book.json <small id="parserInfo"></small></span>
+          <a class="btn ghost small" id="downloadJson" download="book.json" href="#">Download</a>
+        </div>
+        <pre id="json" class="code"></pre>
+      </div>
+      <div id="tab-log" class="tab-body">
+        <ol id="log" class="log"></ol>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.cloud.pspdfkit.com/pspdfkit-web@1.6.0/nutrient-viewer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
